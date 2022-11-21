@@ -1,0 +1,22 @@
+.alert {
+    margin-top: 5rem !important;
+}
+
+.d-flex {
+    margin-top: 4rem;
+    justify-content: flex-end;
+}
+
+ul {
+    list-style-type : none;
+}
+
+#dropdown01 {
+    background-color: darkslateblue;
+    color: white;
+    padding: 0 15px 0 5px;
+}
+
+#dropdown01 i{
+    padding: 0 15px 0 5px;
+}

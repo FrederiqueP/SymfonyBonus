@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Factory\PostFactory;
+use App\Factory\UserFactory;
 use App\Factory\CommentFactory;
 use App\Factory\CategoryFactory;
 use Doctrine\Persistence\ObjectManager;
@@ -12,6 +13,10 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        UserFactory::new()->createMany(10);
+        UserFactory::createOne(['email' => 'user@gmail.com']);
+
+
         CategoryFactory::new()->createMany(5);
 
         // Instanciation de PostFactory en appelant la méthode statique new()

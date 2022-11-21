@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Comment;
 use App\Factory\PostFactory;
+use App\Factory\UserFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\ModelFactory;
 use App\Repository\CommentRepository;
@@ -41,7 +42,7 @@ final class CommentFactory extends ModelFactory
     {
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
-            'user' => self::faker()->name(),
+            'user' => UserFactory::random(),
             'content' => self::faker()->text(250),
             'createdAt' => self::faker()->dateTimeBetween('-3 years', 'now', 'Europe/Paris'),
             'post' => PostFactory::random()

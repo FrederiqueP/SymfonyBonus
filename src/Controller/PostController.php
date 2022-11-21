@@ -38,9 +38,15 @@ class PostController extends AbstractController
         $form = $this->createForm(CommentType::class);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() ) {
+            $user = $this->getUser();
+            if (!$user) {
+                // si pas de user on retourne à la page de login
+                return $this->redirectToRoute('security.login');
+            }
             $comment = $form->getData();
             $comment->setPost($post);
+            $comment->setUser($user);
             // $comment->setCreatedAt(new DateTimeImmutable());
             $manager->persist($comment);
             $manager->flush();
@@ -50,7 +56,7 @@ class PostController extends AbstractController
             return $this->redirect($request->headers->get('referer'));
        }
        
-       
+    
 
         return $this->render('post/index.html.twig', [
             'post' => $post,

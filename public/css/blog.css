@@ -1,0 +1,41 @@
+form {
+    margin:100px;
+}
+
+.alert {
+    margin-top: 5rem !important;
+}
+
+.d-flex {
+    margin-top: 4rem;
+    justify-content: flex-end;
+}
+
+ul {
+    list-style-type : none;
+}
+
+#dropdown01 {
+    background-color: darkslateblue;
+    color: white;
+    padding: 0 15px 0 5px;
+}
+
+#dropdown01 i{
+    padding: 0 15px 0 5px;
+}
+
+.nav-link {
+    padding: 0 15px 0 5px;
+}
+
+
+.error {
+    text-align: center;
+    background-color: coral;
+    color:brown;
+    width: 60%;
+    margin-left: 100px;
+    padding: 5px;
+    border-radius: 5px;
+}

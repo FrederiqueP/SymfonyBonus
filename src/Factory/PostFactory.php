@@ -50,11 +50,12 @@ final class PostFactory extends ModelFactory
         return [
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'title' => self::faker()->sentence(),
-            'content' => self::faker()->text(1500),
+            'content' => self::faker()->text(1000),
             'image' => 'https://picsum.photos/seed/post-' . rand(0,500) . '/750/300',
-            'author' => self::faker()->name(),
+            // 'author' => self::faker()->name(),
             'createdAt' => $dateTimeImmutable,
-            'category' => CategoryFactory::random()
+            'category' => CategoryFactory::random(),
+            'user' => UserFactory::findOrCreate(['email' => 'admin@gmail.com'])
         ];
     }
 

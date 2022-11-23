@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\PostRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeZone;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PostRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[UniqueEntity('title', message: 'Il existe déjà un article avec ce titre')]
 class Post
 {
     #[ORM\Id]
@@ -17,16 +20,15 @@ class Post
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    private ?string $title = null;
+    #[Assert\NotBlank]
+     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $content = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $author = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -38,12 +40,17 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class)]
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['remove']) ]
     #[ORM\OrderBy(["createdAt" => "DESC"])]
     private Collection $comments;
 
+    #[ORM\ManyToOne(inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
+        $this->createdAt = new DateTimeImmutable('now', new DateTimeZone('Europe/Paris'));
         $this->comments = new ArrayCollection();
     }
 
@@ -88,17 +95,6 @@ class Post
         return $this;
     }
 
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -162,6 +158,18 @@ class Post
                 $comment->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -1,0 +1,26 @@
+body {
+    background-color: lightcyan;
+}
+
+.d-flex {
+    margin-bottom: 5em;
+}
+
+table.posts-list figure {
+    width: 150px;
+}
+
+table.posts-list img {
+    width: 100%;
+}
+
+figure.post-image-thumb
+{
+    width: 150px;
+}
+
+figure.post-image-thumb img
+{
+    width: 100%;
+}
+

@@ -3,3 +3,6 @@ user:
     length: 
        min: "Votre mot de passe doit comporter au moins {{ limit }} caractères!"
 
+post:
+  image:
+    maxSize: "Le fichier ne doit pas excéder {{ limit }}"

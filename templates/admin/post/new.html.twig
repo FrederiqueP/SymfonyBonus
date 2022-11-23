@@ -1,0 +1,13 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block title %} {{ parent() }} - Créer un article {% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <input type="submit" value="Enregistrer" class="btn btn-primary mb-3">
+    {{ form_end(form) }}
+{% endblock %}
+
+
+

@@ -8,10 +8,12 @@
 
 <span class="badge badge-secondary">CATEGORIE : {{ post.category.name }}</span>
 
-<p class="lead">Créé par {{ post.author }} le {{ post.createdAt|date('d/m/Y') }}</p>
+<p class="lead">Créé par {{ post.user.fullname }} le {{ post.createdAt|date('d/m/Y') }}</p>
 
-<img src="{{ post.image }}" alt="{{ post.title }}" class="img-fluid rounded">
-
+{# <img src="{{ post.image }}" alt="{{ post.title }}" class="img-fluid rounded"> #}
+{% if post.image %}
+   <img src="{{ asset_post_image(post.image) }}" alt="{{ post.title }}" class="img-fluid rounded">
+{% endif %}
 
 <p class="lead">{{ post.content }}</p>
 

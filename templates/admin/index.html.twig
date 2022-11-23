@@ -1,0 +1,42 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+
+{% block body %}
+   <table class="posts-list">
+{# on pourrait avoir un <thead> #}
+<tbody>
+    <a href="{{ path('admin.post.new') }}" class="btn btn-primary my-3">
+                <i class="fas fa-plus-square"></i> Rédiger un article</a>
+    {% for post in posts %}
+        <tr>
+            <th scope="row">#{{ post.id }}</th>
+            <td>{{ post.createdAt|date("d/m/Y", "Europe/Paris") }}</td>
+            <td>{{ post.title }}</td>
+           <td>{{ post.user.fullname }}</td>
+            <td>
+                <figure>
+                    {# <img src="{{ post.image }}" alt="{{ post.title }}"> #}
+                    {% if post.image %}
+                        <img src="{{ asset_post_image(post.image) }}" alt="{{ post.title }}" class="img-fluid rounded">
+                    {% endif %}
+                </figure>
+            </td>
+            <td>{{ post.category.name }}</td>
+            <td>
+             {# <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a> #}
+             <a href="{{ path('admin.post.edit', {'id':post.id}) }}" class="post-edit mr-3"><i class="fas fa-edit"></i></a>
+
+             {# <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>     #}
+             <a href="{{ path('admin.post.removeImage', {'id': post.id}) }}" class="btn btn-warning" title="Supprimer l'image"><i class="fas fa-calendar-times"></i></a> 
+
+             {# <a href="{{ path('admin.post.remove', {'id':post.id}) }}" class="post-remove"><i class="fas fa-trash-alt"></i></a> #}
+
+             <a href="{{ path('admin.post.remove', {'id':post.id, 'token': csrf_token('delete-post-' ~ post.id)}) }}" class="post-remove"><i class="fas fa-trash-alt"></i></a>
+            </td>
+       </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+

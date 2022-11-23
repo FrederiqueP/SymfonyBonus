@@ -30,8 +30,14 @@
             <h2 class="card-title">{{ post.title }}</h2>
             <span class="badge badge-secondary">Cat: {{ post.category.name }}</span>
         
-            <p>Créé par {{ post.author }} le {{ post.createdAt|date("d/m/Y") }}</p>
-            <img src="{{ post.image }}" alt="{{ post.title }}">
+            <p>Créé par {{ post.user.firstname }} {{ post.user.lastname }} le {{ post.createdAt|date("d/m/Y") }}</p>
+            {# <img src="{{ post.image }}" alt="{{ post.title }}"> #}
+            {# <img src="{{ asset('upload/post/image/' ~ post.image) }}" #}
+            {# <img src="{{ asset(post_image_dir ~ '/' ~ post.image) }}" #}
+            {# <img src="{{ asset_post_image(post.image) }}" alt="{{ post.title }}"> #}
+            {% if post.image %}
+                <img src="{{ asset_post_image(post.image) }}" alt="{{ post.title }}" class="img-fluid rounded">
+            {% endif %}
             <p>{{ post.content|slice(150) }}</p>
             <a href="{{ path('post.index', {'slug':post.slug}) }}">Lire la suite</a>
         </div>

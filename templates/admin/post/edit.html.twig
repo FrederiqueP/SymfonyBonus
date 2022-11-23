@@ -1,0 +1,30 @@
+{% extends 'admin/base.admin.html.twig' %}
+
+{% block title %} {{ parent() }} - Modifier un article {% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+        {{ form_row(form.title) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.content) }}
+
+        {{ form_label(form.imageFile) }}
+        {{ form_errors(form.imageFile) }}
+        {{ form_widget(form.imageFile) }}
+
+        {% if form.vars.data.image %}
+        <figure class="post-image-thumb mt-3">
+            <img src="{{ asset_post_image(form.vars.data.image) }}" alt="">
+        </figure>
+        {% endif %}
+
+        {{ form_help(form.imageFile) }}
+
+        <input type="submit" value="Envoyer" class="btn btn-primary my-3">
+    {{ form_end(form) }}
+
+{% endblock %}
+
+
+

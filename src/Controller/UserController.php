@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+
 use App\Form\UserType;
+use App\Service\AvatarFactory;
+use App\Service\UploaderHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +16,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
+
+    public function __construct(
+        private UploaderHelper $uploaderHelper
+      ){}
 
     #[Route('/signup', name: 'user.signup')]
    public function signup(Request $request, UserPasswordHasherInterface $hasher, EntityManagerInterface $manager): Response
@@ -27,7 +34,14 @@ class UserController extends AbstractController
     
             $hashedPassword = $hasher->hashPassword($user, $plainPassword);
             $user->setHash($hashedPassword);
-           
+
+            // ajout avatar    
+            $size = 5;
+            $nbColor = 3;
+            $avatar = AvatarFactory::new($size, $nbColor);
+            
+            $this->uploaderHelper->uploadUserAvatar($user, $avatar);
+
             $manager->persist($user);
             $manager->flush();
 

@@ -11,6 +11,11 @@ form {
     justify-content: flex-end;
 }
 
+#dropdown01 > img:nth-child(2){
+    width: 30px;
+    height: 30px;
+}
+
 ul {
     list-style-type : none;
 }

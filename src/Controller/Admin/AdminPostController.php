@@ -50,7 +50,111 @@ class AdminPostController extends AbstractController
         // }
 
         $this->uploaderHelper->uploadPostImage($post, $form->get('imageFile')->getData());
+
+        // Redimensionner la taille de l'image à une largeur de 750 pixels
+        // Utilisation des fonctions de la librairie GD pour créer des images
         
+        $imagepath = "upload/post/image/". $post->getImage();
+        //Ceci est le nouveau fichier que vous enregistrez , plutot écrasé
+        $save = "upload/post/image/". $post->getImage(); 
+        $info = getimagesize("upload/post/image/". $post->getImage());
+        $mime = $info['mime'];
+
+        switch ($mime) {
+            case 'image/jpeg':
+                $image_create_func = 'imagecreatefromjpeg';
+                $image_save_func = 'imagejpeg';
+                break;
+            case 'image/png':
+                $image_create_func = 'imagecreatefrompng';
+                $image_save_func = 'imagepng';
+                break;
+            case 'image/gif':
+                $image_create_func = 'imagecreatefromgif';
+                $image_save_func = 'imagegif';
+                break;
+            default: 
+                throw new Exception('Unknown image type.');
+        }
+                
+        // list($width, $height) = getimagesize("upload/post/image/". $post->getImage());
+        // $modwidth = 700;  //target width
+        // $diff = $width / $modwidth;
+        // $modheight = $height / $diff;
+        // $tn = imagecreatetruecolor($modwidth, $modheight) ;
+        // $image = $image_create_func("upload/post/image/". $post->getImage()) ;
+        // imagecopyresampled($tn, $image, 0, 0, 0, 0, $modwidth, $modheight, $width, $height) ;
+        // $image_save_func($tn, $save) ;
+
+
+
+        $image = $image_create_func("upload/post/image/". $post->getImage()) ;
+        list($width, $height) = getimagesize("upload/post/image/". $post->getImage());
+        // $tn = imagecreatetruecolor(700, 300) ;
+        // $image2 = imagecrop($image, ['x' => 0, 'y' => 0 , 'width' => '700px', 'height' => '300px']);
+        // imagecropauto($tn , IMG_CROP_BLACK);
+
+        $max_width = 750;
+        $max_height = 300;
+        $new_width = 0;
+        $new_height = 0;
+        $dst_x = 0;
+        $dst_y = 0;
+        
+        // dd($max_width . ' w ' .$width . ' ;' .$max_height . ' h ' .$height);
+        
+
+        // if($width >= $height ) {
+        //     if($max_width >= $width):
+        //         return 'no_need_to_resize';
+        //     endif;
+            
+        //     if($width = $height){
+        //         $new_width = $max_height;
+        //         $new_height = $max_height;
+        //     } else {
+        
+        //         $new_width = $max_width;
+        //         $reduction = ( ($new_width * 100) / $width );
+        //         $new_height = round(( ($height * $reduction )/100 ),0);
+
+        //     }
+            
+        // } else {
+        //     if($max_height >= $height):
+        //         return 'no_need_to_resize';
+        //     endif;
+    
+        //     $reduction = ( ($new_height * 100) / $height );
+        //     $new_width = round(( ($width * $reduction )/100 ),0);
+
+        // }
+
+        if($width >= $height ) {
+            // en paysage
+            $echelle = $max_width / $width; // exemple : 0.39
+            // si la hauteur par echelle est superieure à la hauteur max on diminue sur echelle hauteur
+            if( ($height * $echelle) > $max_height) {
+                $echelle = $max_height / $height;
+            }
+         }
+        else {
+            $echelle = $max_height / $height;
+            if( ($width * $echelle) > $max_width) {
+                $echelle = $max_width / $width;
+            }
+        }
+
+        $new_width = round(($width * $echelle), 0);
+        $new_height = round(($height * $echelle), 0);
+        
+        if (($new_width != 0) && ($new_height != 0)) {
+            $tn = imagecreatetruecolor($new_width, $new_height) ;
+
+            imagecopyresampled($tn, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height) ;
+            $image_save_func($tn, $save);
+        }
+
         // On persiste en BDD
         $this->manager->persist($post);
         $this->manager->flush();

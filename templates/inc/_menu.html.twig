@@ -4,14 +4,12 @@
 
 	    <!-- Menu utilisateur mode connecté -->
        <li class="nav-item dropdown">
-
-            
-            
+    
            <a class="nav-link dropdown-toggle" 
               href="#" 
               id="dropdown01" 
               data-bs-toggle="dropdown" 
-              aria-expanded="false"><i class="fa-solid fa-user"></i>{{ app.user.firstname }} {{ app.user.lastname }}</a>
+              aria-expanded="false"><i class="fa-solid fa-user"></i> <img src="{{ asset(avatar_dir ~ '/' ~ app.user.avatar) }}"> {{ app.user.firstname }} {{ app.user.lastname }}</a>
            <ul class="dropdown-menu" aria-labelledby="dropdown01">
                <li><a class="dropdown-item" href="#">Mon compte</a></li>
                <li><a class="dropdown-item" 
